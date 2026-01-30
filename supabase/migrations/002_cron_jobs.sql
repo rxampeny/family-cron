@@ -1,0 +1,91 @@
+-- ============================================
+-- Configuración de Cron Jobs con pg_cron
+-- Para envío automático de emails y SMS
+-- ============================================
+
+-- Habilitar la extensión pg_cron (si está disponible en tu plan)
+-- Nota: pg_cron solo está disponible en planes Pro y superiores de Supabase
+-- Para el plan gratuito, usar un servicio externo como cron-job.org
+
+-- CREATE EXTENSION IF NOT EXISTS pg_cron;
+
+-- ============================================
+-- OPCIÓN 1: Usando pg_cron (Plan Pro)
+-- ============================================
+
+-- Enviar emails de cumpleaños cada día a las 9:00 AM (hora de Madrid)
+-- SELECT cron.schedule(
+--     'send-birthday-emails',
+--     '0 9 * * *',  -- 9:00 AM todos los días
+--     $$
+--     SELECT net.http_post(
+--         url := current_setting('app.settings.supabase_url') || '/functions/v1/send-birthday-emails',
+--         headers := jsonb_build_object(
+--             'Content-Type', 'application/json',
+--             'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
+--         ),
+--         body := '{}'
+--     );
+--     $$
+-- );
+
+-- Enviar SMS de cumpleaños cada día a las 9:30 AM (hora de Madrid)
+-- SELECT cron.schedule(
+--     'send-birthday-sms',
+--     '30 9 * * *',  -- 9:30 AM todos los días
+--     $$
+--     SELECT net.http_post(
+--         url := current_setting('app.settings.supabase_url') || '/functions/v1/send-birthday-sms',
+--         headers := jsonb_build_object(
+--             'Content-Type', 'application/json',
+--             'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
+--         ),
+--         body := '{}'
+--     );
+--     $$
+-- );
+
+-- Enviar recordatorios cada día a las 20:00 (8 PM, hora de Madrid)
+-- SELECT cron.schedule(
+--     'send-reminders',
+--     '0 20 * * *',  -- 8:00 PM todos los días
+--     $$
+--     SELECT net.http_post(
+--         url := current_setting('app.settings.supabase_url') || '/functions/v1/send-reminders',
+--         headers := jsonb_build_object(
+--             'Content-Type', 'application/json',
+--             'Authorization', 'Bearer ' || current_setting('app.settings.service_role_key')
+--         ),
+--         body := '{}'
+--     );
+--     $$
+-- );
+
+-- ============================================
+-- OPCIÓN 2: Usando servicio externo (Plan Gratuito)
+-- ============================================
+-- Para el plan gratuito de Supabase, usa cron-job.org o similar:
+--
+-- 1. Crear cuenta en https://cron-job.org
+-- 2. Crear 3 cron jobs con estas URLs:
+--
+--    a) Emails de cumpleaños (9:00 AM):
+--       URL: https://[PROJECT_ID].supabase.co/functions/v1/send-birthday-emails
+--       Headers: Authorization: Bearer [ANON_KEY]
+--       Método: POST
+--
+--    b) SMS de cumpleaños (9:30 AM):
+--       URL: https://[PROJECT_ID].supabase.co/functions/v1/send-birthday-sms
+--       Headers: Authorization: Bearer [ANON_KEY]
+--       Método: POST
+--
+--    c) Recordatorios (8:00 PM):
+--       URL: https://[PROJECT_ID].supabase.co/functions/v1/send-reminders
+--       Headers: Authorization: Bearer [ANON_KEY]
+--       Método: POST
+--
+-- Zona horaria: Europe/Madrid
+-- ============================================
+
+-- Nota: Este archivo es solo documentación
+-- Los cron jobs deben configurarse manualmente según el plan de Supabase
