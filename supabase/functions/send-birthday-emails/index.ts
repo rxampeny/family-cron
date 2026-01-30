@@ -9,6 +9,13 @@ serve(async (req) => {
   if (corsResponse) return corsResponse;
 
   try {
+    // Parse request body for force flag
+    let force = false;
+    try {
+      const body = await req.json();
+      force = body?.force === true;
+    } catch { /* no body or invalid JSON */ }
+
     const supabase = createSupabaseClient();
 
     // Check maintenance mode
@@ -83,17 +90,19 @@ serve(async (req) => {
         continue;
       }
 
-      // Check if email was already sent today
-      const { data: alreadySent } = await supabase
-        .rpc('was_email_sent_today', {
-          p_email: person.email,
-          p_tipus: 'BIRTHDAY'
-        });
+      // Check if email was already sent today (skip check if force=true)
+      if (!force) {
+        const { data: alreadySent } = await supabase
+          .rpc('was_email_sent_today', {
+            p_email: person.email,
+            p_tipus: 'BIRTHDAY'
+          });
 
-      if (alreadySent) {
-        results.skipped++;
-        results.details.push({ nom: person.nom, status: 'skipped', error: 'Already sent today' });
-        continue;
+        if (alreadySent) {
+          results.skipped++;
+          results.details.push({ nom: person.nom, status: 'skipped', error: 'Already sent today' });
+          continue;
+        }
       }
 
       // Generate and send email

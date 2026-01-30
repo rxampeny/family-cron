@@ -312,7 +312,7 @@ async function sendBirthdayEmailsManually() {
     btn.innerHTML = '⏳ Enviant...';
 
     try {
-        const result = await callEdgeFunction('send-birthday-emails');
+        const result = await callEdgeFunction('send-birthday-emails', { force: true });
 
         if (result.success) {
             showSyncMessage(`✅ Emails enviats: ${result.sent || 0}`, false);
