@@ -2,15 +2,15 @@ name: Cron Emails
 
 on:
   schedule:
+    # 4:00 AM hora Madrid (3:00 UTC en invierno, 2:00 UTC en verano)
+    - cron: '0 3 * * *'
     # 9:00 AM hora Madrid (8:00 UTC en invierno, 7:00 UTC en verano)
     - cron: '0 8 * * *'
-    # 8:00 PM hora Madrid (19:00 UTC en invierno, 18:00 UTC en verano)
-    - cron: '0 19 * * *'
   workflow_dispatch:
 
 jobs:
   send-birthday-emails:
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 8 * * *'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 3 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Send birthday emails
@@ -22,7 +22,7 @@ jobs:
             -d '{}'
 
   send-reminders:
-    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 19 * * *'
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 8 * * *'
     runs-on: ubuntu-latest
     steps:
       - name: Send reminders
