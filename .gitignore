@@ -2,3 +2,13 @@ Code.gs
 
 # Local Netlify folder
 .netlify
+
+# Archivos con credenciales reales - NO subir a GitHub
+CONFIGURACION-COMPLETA.md
+GUIA-SETUP-COMPLETA.md
+GUIA-SETUP-COMPLETA.html
+
+# Temp / IDE
+_ul
+.Rhistory
+node_modules/
