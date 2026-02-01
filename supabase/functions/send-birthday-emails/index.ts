@@ -94,7 +94,7 @@ serve(async (req) => {
       if (!force) {
         const { data: alreadySent } = await supabase
           .rpc('was_email_sent_today', {
-            p_email: person.email,
+            p_persona_id: person.id,
             p_tipus: 'BIRTHDAY'
           });
 

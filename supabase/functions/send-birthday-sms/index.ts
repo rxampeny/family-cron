@@ -88,7 +88,7 @@ serve(async (req) => {
       // Check if SMS was already sent today
       const { data: alreadySent } = await supabase
         .rpc('was_sms_sent_today', {
-          p_telefon: formattedPhone,
+          p_persona_id: person.id,
           p_tipus: 'BIRTHDAY'
         });
 

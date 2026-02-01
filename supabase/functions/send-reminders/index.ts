@@ -79,7 +79,7 @@ serve(async (req) => {
         // Check if already sent today
         const { data: emailAlreadySent } = await supabase
           .rpc('was_email_sent_today', {
-            p_email: member.email,
+            p_persona_id: member.id,
             p_tipus: 'REMINDER'
           });
 
@@ -112,7 +112,7 @@ serve(async (req) => {
         // Check if already sent today
         const { data: smsAlreadySent } = await supabase
           .rpc('was_sms_sent_today', {
-            p_telefon: formattedPhone,
+            p_persona_id: member.id,
             p_tipus: 'REMINDER'
           });
 
