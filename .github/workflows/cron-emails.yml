@@ -21,6 +21,18 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{}'
 
+  send-birthday-sms:
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 3 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send birthday SMS
+        run: |
+          curl -s -X POST \
+            "${{ secrets.SUPABASE_URL }}/functions/v1/send-birthday-sms" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{}'
+
   send-reminders:
     if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 8 * * *'
     runs-on: ubuntu-latest
