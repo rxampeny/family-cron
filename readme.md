@@ -26,7 +26,7 @@ public/                             → fotos i icones de la família
 | 06:00 AM | `send-reminders` — avisa tota la família del cumpleaños de demà |
 
 ## Backend
-Les Edge Functions (API) estan al repo `rxampeny/family-agents-sdk` desplegat a Supabase.
+Les Edge Functions (API) estan desplegades a Supabase (project ref: `bfforytzxicguykosnna`).
 
 ## Secrets necessaris a GitHub
 - `SUPABASE_URL`
